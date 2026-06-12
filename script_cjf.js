@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const correctElement = document.getElementById('correct');
     const incorrectElement = document.getElementById('incorrect');
     const attemptedElement = document.getElementById('attempted');
-    var timeoutValue = 400;
+    var timeoutValue = 4000;
 
     // Check if the user's answer is correct
     totalAttempted++; // Increment total attempted for each question 
@@ -136,13 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
       resultElement.style.color = 'green';
       currentStreak++; // Increase the current streak for correct answers
       totalCorrect++; // Increment total correct count
-      timeoutValue = 400;
+      timeoutValue = 4000;
     } else {
       resultElement.innerHTML = `Incorrect. The correct answer is ${answer}. Try again!`;
       resultElement.style.color = 'red';
       currentStreak = 0; // Reset the streak on incorrect answer
       totalIncorrect++; // Increment total incorrect count
-      timeoutValue = 400;
+      timeoutValue = 4000;
       
     }
 
