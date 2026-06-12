@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Math Drill</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 40px;
+}
+
+#game {
+    display: none;
+}
+
+.question {
+    font-size: 40px;
+    margin: 20px;
+}
+
+input {
+    font-size: 24px;
+    width: 120px;
+    text-align: center;
+}
+
+button {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 5px;
+}
+
+#feedback {
+    font-size: 24px;
+    margin: 15px;
+    height: 30px;
+}
+
+#score {
+    font-size: 20px;
+    margin-top: 15px;
+}
+</style>
+</head>
+<body>
+
+<h1>Math Drill Practice</h1>
+
+<div id="menu">
+    <h2>Select Options</h2>
+
+    <p>
+        Operation:
+        <select id="operation">
+            <option value="add">Addition</option>
+            <option value="subtract">Subtraction</option>
+            <option value="multiply">Multiplication</option>
+            <option value="divide">Division</option>
+        </select>
+    </p>
+
+    <p>
+        Number Type:
+        <select id="numberType">
+            <option value="positive">Positive Only</option>
+            <option value="integer">Positive & Negative</option>
+        </select>
+    </p>
+
+    <button onclick="startGame()">Start Drill</button>
+</div>
+
+<div id="game">
+    <div class="question" id="question"></div>
+
+    <input type="number" id="answer">
+
+    <br><br>
+
+    <button onclick="checkAnswer()">Submit</button>
+
+    <div id="feedback"></div>
+
+    <div id="score">
+        Correct: <span id="correct">0</span>
+        |
+        Wrong: <span id="wrong">0</span>
+    </div>
+
+    <br>
+
+    <button onclick="backToMenu()">Back to Menu</button>
+</div>
+
+<script>
+let operation;
+let numberType;
+
+let num1;
+let num2;
+let answer;
+
+let correct = 0;
+let wrong = 0;
+
+function randomNumber() {
+    if (numberType === "integer") {
+        return Math.floor(Math.random() * 21) - 10;
+    }
+    return Math.floor(Math.random() * 12) + 1;
+}
+
+function startGame() {
+    operation = document.getElementById("operation").value;
+    numberType = document.getElementById("numberType").value;
+
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("game").style.display = "block";
+
+    correct = 0;
+    wrong = 0;
+
+    updateScore();
+    nextQuestion();
+}
+
+function nextQuestion() {
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("answer").value = "";
+    document.getElementById("answer").focus();
+
+    num1 = randomNumber();
+    num2 = randomNumber();
+
+    switch (operation) {
+
+        case "add":
+            answer = num1 + num2;
+            document.getElementById("question").textContent =
+                `${num1} + ${num2}`;
+            break;
+
+        case "subtract":
+            answer = num1 - num2;
+            document.getElementById("question").textContent =
+                `${num1} - ${num2}`;
+            break;
+
+        case "multiply":
+            answer = num1 * num2;
+            document.getElementById("question").textContent =
+                `${num1} × ${num2}`;
+            break;
+
+        case "divide":
+            num2 = Math.floor(Math.random() * 12) + 1;
+            answer = Math.floor(Math.random() * 12) + 1;
+            num1 = num2 * answer;
+
+            document.getElementById("question").textContent =
+                `${num1} ÷ ${num2}`;
+            break;
+    }
+}
+
+function checkAnswer() {
+    const userAnswer = Number(
+        document.getElementById("answer").value
+    );
+
+    if (userAnswer === answer) {
+        correct++;
+        document.getElementById("feedback").textContent =
+            "✅ Correct!";
+    } else {
+        wrong++;
+        document.getElementById("feedback").textContent =
+            `❌ Correct answer: ${answer}`;
+    }
+
+    updateScore();
+
+    setTimeout(nextQuestion, 1000);
+}
+
+function updateScore() {
+    document.getElementById("correct").textContent = correct;
+    document.getElementById("wrong").textContent = wrong;
+}
+
+function backToMenu() {
+    document.getElementById("game").style.display = "none";
+    document.getElementById("menu").style.display = "block";
+}
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" &&
+        document.getElementById("game").style.display === "block") {
+        checkAnswer();
+    }
+});
+</script>
+
+</body>
+</html>
